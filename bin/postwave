@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require_relative '../lib/postwave'
+require 'optparse'
+
+OptionParser.new do |opts|
+
+end
