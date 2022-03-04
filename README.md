@@ -13,7 +13,7 @@ It lets you write posts in Markdown and then display them on a dynamic site usin
 ### Setup
 
 ```
-> postwave setup
+> postwave new
 ```
 
 Run this from the root directory of your project. It will create a `postwave.yaml` config file in the current directory and a `/_posts/` directory. This is where you will write your posts.
@@ -39,10 +39,10 @@ postwave.yaml
 
 `postwave.yaml`: The config file for Postwave.
 
-### Create A Post
+### Create A New Blog Post
 
 ```
-> postwave create
+> postwave post
 ```
 
 This will generate at new Markdown file in the `_posts/` directory. The filename will be the current timestamp. This will eventually be overwritten by the `build` command, so don't worry too much about it. The file will have a general structure like this:

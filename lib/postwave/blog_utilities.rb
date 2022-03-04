@@ -1,0 +1,46 @@
+module Postwave
+  module BlogUtilities
+    CONFIG_FILE_NAME = "postwave.yaml"
+    INDEX_FILE_NAME = "index.csv"
+    SUMMARY_FILE_NAME = "summary.yaml"
+    POSTS_DIR = "_posts"
+    META_DIR = "meta"
+    TAGS_DIR = "tags"
+
+    def is_set_up?
+      missing_paths = find_missing_paths
+      puts missing_paths
+      if missing_paths.empty?
+        true
+      else
+        # handle output
+        puts "not set up!"
+        false
+      end
+    end
+
+    def file_paths
+      [
+        File.join(Dir.pwd, CONFIG_FILE_NAME),
+        File.join(Dir.pwd, POSTS_DIR, META_DIR, INDEX_FILE_NAME),
+        File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME),
+      ]
+    end
+
+    def directory_paths
+      [
+        File.join(Dir.pwd, POSTS_DIR),
+        File.join(Dir.pwd, POSTS_DIR, META_DIR),
+        File.join(Dir.pwd, POSTS_DIR, META_DIR, TAGS_DIR),
+      ]
+    end
+
+    def find_missing_paths
+      paths_to_check = directory_paths + file_paths
+      missing_paths = []
+      paths_to_check.each do |path|
+        missing_paths << path if !FileTest.exists?(path)
+      end
+    end
+  end
+end
