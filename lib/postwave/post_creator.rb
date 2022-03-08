@@ -20,7 +20,7 @@ module Postwave
       initial_content = <<~CONTENT
       ---
       title: 
-      date: #{now}
+      date: #{now.strftime("%F %R")}
       tags:
       ---
       

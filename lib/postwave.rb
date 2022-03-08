@@ -1,6 +1,7 @@
 require_relative "postwave/blog_creator"
 require_relative "postwave/blog_builder"
 require_relative "postwave/post_creator"
+require_relative "postwave/post"
 require_relative "postwave/version"
 
 module Postwave
@@ -11,10 +12,10 @@ module Postwave
     #Postwave::BlogCreator.instance.create
     
     # post
-    Postwave::PostCreator.instance.create
+    # Postwave::PostCreator.instance.create
     
     # build
-    # Postwave::BlogBuilder.instance.build
+    Postwave::BlogBuilder.instance.build
   end
 end
 

@@ -36,8 +36,10 @@ module Postwave
     end
 
     def write_initial_summary_contents
-      summary = {}
-      summary['post_count'] = 0
+      summary = {
+        post_count: 0,
+        tags: []
+      }
 
       File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME), summary.to_yaml)
     end
