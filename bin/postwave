@@ -3,6 +3,42 @@
 require_relative '../lib/postwave'
 require 'optparse'
 
-OptionParser.new do |opts|
+options = {}
 
+subtext = <<HELP
+Commands:
+  new   :     creates new Postwave project in the current directory
+  post  :     creates a new post in the /_posts/ directory
+  build :     builds the posts and meta information for the blog
+See 'postwave COMMAND --help' for more information on a specific command.
+HELP
+
+global = OptionParser.new do |opts|
+  opts.banner = "Usage: postwave [options] [command]"
+  opts.on '-v', '--version', 'Show version' do |v|
+    options[:version] = v
+  end
+  opts.separator ""
+  opts.separator subtext
 end
+
+subcommands = { 
+  'new' => OptionParser.new do |opts|
+    opts.banner = "Usage: new"
+  end,
+ 'post' => OptionParser.new do |opts|
+    opts.banner = "Usage: post"
+  end,
+  'build' => OptionParser.new do |opts|
+    opts.banner = "Usage: build [options]"
+    opts.on("-q", "--quiet", "quietly run ") do |v|
+      options[:quiet] = v
+    end
+  end
+}
+
+global.order!
+command = ARGV.shift
+subcommands[command].order! if command
+
+Postwave.call(command, options)
