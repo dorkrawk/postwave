@@ -2,25 +2,27 @@ require "fileutils"
 require "yaml"
 require "singleton"
 require_relative "blog_utilities"
+require_relative "display_helper"
 
 module Postwave
-  class BlogCreator  # need to rename this. "Builder" should pertain to the "build" command 
+  class BlogCreator
     include Singleton
     include BlogUtilities
+    include DisplayHelper
 
     def create
+      output_creating_blog
+
       if is_set_up?
-        puts "postwave blog already exisits in this location"
+        output_exising_setup
         return
       end
+      
+      # build_directories
+      # build_files
+      # write_initial_summary_contents
 
-      puts "creating new blog" # replace all puts here with helper module call
-
-      build_directories
-      build_files
-      write_initial_summary_contents
-
-      puts "new blog created" 
+      # output_blog_created 
     end
 
     def build_directories

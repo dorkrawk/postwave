@@ -3,20 +3,26 @@ require "yaml"
 require "singleton"
 require 'csv'
 require_relative "blog_utilities"
+require_relative "display_helper"
 require_relative "post"
 
 module Postwave
   class BlogBuilder
     include Singleton
     include BlogUtilities
+    include DisplayHelper
 
     INDEX_HEADERS = ["file_name", "date", "title"]
 
     def build
-      # if !is_set_up?
-      #   puts "you need to set up the blog first!"
-      #   return
-      # end
+      start = Time.now
+      
+      output_building
+
+      if !is_set_up?
+        output_missing_setup
+        return
+      end
 
       # load and rename post file names
       posts = load_posts
@@ -38,14 +44,13 @@ module Postwave
           end
         end
       end
+      output_post_processed(posts)
 
       build_tags_files(tags)
+      build_summary(posts, tags)
 
-      summary = {
-        post_count: posts.count,
-        tags: tags.keys
-      }
-      build_summary(summary)
+      build_time = Time.now - start
+      output_build_completed(build_time)
     end
 
     def load_posts
@@ -58,15 +63,22 @@ module Postwave
 
     def build_tags_files(tags)
       tags.each do |tag, post_files|
-        File.open(File.join(Dir.pwd, POSTS_DIR, META_DIR, TAGS_DIR, "#{tag}.md"), "w") do |tag_file|
-          post_files.each do |post_file|
-            tag_file.puts post_file
-          end
-        end
+        tag_info = {
+          count: post_files.count,
+          post_file_paths: post_files
+        }
+        File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, TAGS_DIR, "#{tag}.yaml"), tag_info.to_yaml)
       end
+      output_tags_created(tags)
     end
 
-    def build_summary(summary)
+    def build_summary(posts, tags)
+      summary = {
+        post_count: posts.count,
+        most_recent_file_name: posts.first.file_name,
+        most_recent_date: posts.first.date,
+        tags: tags.keys
+      }
       File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME), summary.to_yaml)
     end
   end

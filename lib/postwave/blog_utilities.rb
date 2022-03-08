@@ -9,14 +9,7 @@ module Postwave
 
     def is_set_up?
       missing_paths = find_missing_paths
-      puts missing_paths
-      if missing_paths.empty?
-        true
-      else
-        # handle output
-        puts "not set up!"
-        false
-      end
+      missing_paths.empty?
     end
 
     def file_paths
@@ -41,6 +34,7 @@ module Postwave
       paths_to_check.each do |path|
         missing_paths << path if !FileTest.exists?(path)
       end
+      missing_paths
     end
   end
 end

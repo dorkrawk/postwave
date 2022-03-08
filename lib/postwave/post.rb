@@ -34,7 +34,9 @@ module Postwave
 
       # turn "tags" into an array
       if field_content["tags"]
-        field_content["tags"] = field_content["tags"].split(",").map(&:strip)
+        field_content["tags"] = field_content["tags"].split(",").map do |tag|
+          tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+        end
       end
 
       self.new(path, field_content)
