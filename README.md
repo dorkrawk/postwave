@@ -1,4 +1,4 @@
-# Postwave
+# Postwave 🌊
 
 Write your posts statically. Interact with them dynamically.
 
@@ -56,6 +56,7 @@ tags:
 
 Start writing!
 ```
+Tags should be comma separated.
 
 You can add an optional `slug:` value in the top section if you want to control the filename.
 
@@ -69,7 +70,7 @@ This will "build" the blog. This involves:
 - regenerating the `index.csv` file
 - changing the post file names to match `yyyy-dd-mm-title-or-slug.md`
 - updating the `summary.yaml`
-- creating and updating files `/tags/` (which will be `tag.yaml` files for each tag)
+- creating and updating tag files (which will be `/tags/[tag-name].yaml` files for each tag)
 
 ## Available Client Libraries
 
@@ -82,7 +83,7 @@ Postwave is not for everything.
 It is not:
 - for people who want to generate a purely static site
 - for people who want unlimited customization
-- for giant blogs with many many thousands of posts
+- for giant blogs with many many thousands of posts (probably?)
 
 ## Why did you build another blogging tool?
 

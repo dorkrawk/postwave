@@ -32,7 +32,7 @@ module Postwave
     end
 
     def output_tags_created(tags)
-      puts "Create tag files for #{tags.count} tags."
+      puts "Built tag files for #{tags.count} tags."
     end
 
     def output_build_completed(build_time)

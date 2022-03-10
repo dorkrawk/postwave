@@ -23,7 +23,7 @@ module Postwave
 
       initial_content = <<~CONTENT
       ---
-      title: 
+      title: #{(0...8).map { (65 + rand(26)).chr }.join}
       date: #{now.strftime("%F %R")}
       tags:
       ---

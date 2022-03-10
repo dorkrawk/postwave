@@ -17,12 +17,12 @@ module Postwave
         output_exising_setup
         return
       end
-      
-      # build_directories
-      # build_files
-      # write_initial_summary_contents
 
-      # output_blog_created 
+      build_directories
+      build_files
+      write_initial_summary_contents
+
+      output_blog_created 
     end
 
     def build_directories
