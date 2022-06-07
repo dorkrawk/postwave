@@ -24,8 +24,8 @@ module Postwave
         return
       end
 
-      # load and rename post file names
-      posts = load_posts
+      # load, rename, and sort post file names
+      posts = load_posts.sort_by { |p| p.date }.reverse
       tags = {}
 
       CSV.open(File.join(Dir.pwd, POSTS_DIR, META_DIR, INDEX_FILE_NAME), "w") do |csv|
