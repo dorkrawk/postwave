@@ -4,7 +4,7 @@ module Postwave
    class Post
     include BlogUtilities
 
-    KNOWN_FIELDS = %w(title date tags slug body)
+    KNOWN_FIELDS = %w(title date tags title_slug body)
     REQUIRED_FIELDS = %w(title date)
     MEATADATA_DELIMTER = "---"
 
@@ -12,6 +12,7 @@ module Postwave
 
     def self.new_from_file_path(path)
       metadata_delimter_count = 0
+      body_buffer_count = 0
       field_content = { "body" => "" }
 
       File.readlines(path).each do |line|
@@ -27,8 +28,12 @@ module Postwave
           field, value = clean_line.split(":", 2).map(&:strip)
           field_content[field] = value
         else
-          next if clean_line.empty?
-          field_content["body"] += line
+          if body_buffer_count == 0
+            body_buffer_count += 1
+            next if clean_line.empty?
+          end
+
+          field_content["body"] += "#{line}\n"
         end
       end
 
@@ -51,11 +56,15 @@ module Postwave
       end
     end
 
+    def slug
+      @file_name[...-3] # get rid of ".md"
+    end
+
     def generated_file_name
-      slug = @slug || @title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+      title_slug = @title_slug || @title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
 
       # YYYY-MM-DD-slug-from-title.md
-      "#{@date[..9]}-#{slug}.md"
+      "#{@date[..9]}-#{title_slug}.md"
     end
 
     def update_file_name!

@@ -2,6 +2,7 @@ require "fileutils"
 require "yaml"
 require "singleton"
 require 'csv'
+require 'time'
 require_relative "blog_utilities"
 require_relative "display_helper"
 require_relative "post"
@@ -12,7 +13,7 @@ module Postwave
     include BlogUtilities
     include DisplayHelper
 
-    INDEX_HEADERS = ["file_name", "date", "title"]
+    INDEX_HEADERS = ["slug", "date", "title"]
 
     def build
       start = Time.now
@@ -33,13 +34,13 @@ module Postwave
         posts.each do |post|
           post.update_file_name!
 
-          csv << [post.file_name, post.date, post.title]
+          csv << [post.slug, post.date, post.title]
 
           post.tags.each do |tag|
             if tags.has_key? tag
-              tags[tag] << post.file_name
+              tags[tag] << post.slug
             else
-              tags[tag] = [post.file_name]
+              tags[tag] = [post.slug]
             end
           end
         end
@@ -62,10 +63,10 @@ module Postwave
     end
 
     def build_tags_files(tags)
-      tags.each do |tag, post_files|
+      tags.each do |tag, post_slugs|
         tag_info = {
-          count: post_files.count,
-          post_file_paths: post_files
+          count: post_slugs.count,
+          post_slugs: post_slugs
         }
         File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, TAGS_DIR, "#{tag}.yaml"), tag_info.to_yaml)
       end

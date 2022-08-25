@@ -74,7 +74,7 @@ This will "build" the blog. This involves:
 
 ## Available Client Libraries
 
-*umm... I guess I need to write some...*
+- [Ruby](https://github.com/dorkrawk/postwave-ruby-client)
 
 ## What is Postwave Not?
 
