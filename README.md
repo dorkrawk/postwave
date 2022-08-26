@@ -60,6 +60,8 @@ Tags should be comma separated.
 
 You can add an optional `slug:` value in the top section if you want to control the filename.
 
+You can keep a post in "draft" status (meaning it won't get processed or added to the index) by adding `draft: true` to the top section of the post.
+
 ### Build the Blog
 
 ```

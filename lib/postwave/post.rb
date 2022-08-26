@@ -4,7 +4,7 @@ module Postwave
    class Post
     include BlogUtilities
 
-    KNOWN_FIELDS = %w(title date tags title_slug body)
+    KNOWN_FIELDS = %w(title date tags title_slug body draft)
     REQUIRED_FIELDS = %w(title date)
     MEATADATA_DELIMTER = "---"
 
@@ -42,6 +42,11 @@ module Postwave
         field_content["tags"] = field_content["tags"].split(",").map do |tag|
           tag.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
         end
+      end
+
+      # turn "draft" into boolean
+      if field_content["draft"]
+        field_content["draft"] = field_content["draft"].downcase == "true"
       end
 
       self.new(path, field_content)

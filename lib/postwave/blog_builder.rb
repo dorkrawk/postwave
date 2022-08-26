@@ -27,11 +27,12 @@ module Postwave
 
       # load, rename, and sort post file names
       posts = load_posts.sort_by { |p| p.date }.reverse
+      draft_posts, published_posts = posts.partition { |p| p&.draft }
       tags = {}
 
       CSV.open(File.join(Dir.pwd, POSTS_DIR, META_DIR, INDEX_FILE_NAME), "w") do |csv|
         csv << INDEX_HEADERS
-        posts.each do |post|
+        published_posts.each do |post|
           post.update_file_name!
 
           csv << [post.slug, post.date, post.title]
@@ -45,10 +46,11 @@ module Postwave
           end
         end
       end
-      output_post_processed(posts)
+      output_post_processed(published_posts)
+      output_drafts_skipped(draft_posts)
 
       build_tags_files(tags)
-      build_summary(posts, tags)
+      build_summary(published_posts, tags)
 
       build_time = Time.now - start
       output_build_completed(build_time)

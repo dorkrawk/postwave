@@ -28,11 +28,20 @@ module Postwave
     end
 
     def output_post_processed(posts)
-      puts "Processed #{posts.count} posts."
+      count = posts.count
+      puts "Processed #{count} #{simple_pluralizer("post", count)}."
+    end
+
+    def output_drafts_skipped(drafts)
+      if drafts.any?
+        count = drafts.count
+        puts "Skipped #{count} #{simple_pluralizer("draft", count)}."
+      end
     end
 
     def output_tags_created(tags)
-      puts "Built tag files for #{tags.count} tags."
+      count = tags.count
+      puts "Built tag files for #{count} #{simple_pluralizer("tag", count)}."
     end
 
     def output_build_completed(build_time)
@@ -53,6 +62,14 @@ module Postwave
       puts "Something went wrong.".red
     end
 
+    private
+    def simple_pluralizer(word, count)
+      if count == 1
+        word
+      else
+        word + "s"
+      end
+    end
   end
 end
 
