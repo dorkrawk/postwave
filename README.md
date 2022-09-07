@@ -58,9 +58,16 @@ Start writing!
 ```
 Tags should be comma separated.
 
-You can add an optional `slug:` value in the top section if you want to control the filename.
-
 You can keep a post in "draft" status (meaning it won't get processed or added to the index) by adding `draft: true` to the top section of the post.
+
+```
+---
+title: This Post Isn't Quite Ready
+date: 2022-01-01
+tags:
+draft: true
+---
+```
 
 ### Build the Blog
 
@@ -70,7 +77,8 @@ You can keep a post in "draft" status (meaning it won't get processed or added t
 
 This will "build" the blog. This involves:
 - regenerating the `index.csv` file
-- changing the post file names to match `yyyy-dd-mm-title-or-slug.md`
+- generating slugs for each posts based on the post title and ensuring that there are no duplicate slugs
+- changing the post file names to match `yyyy-dd-mm-slug.md`
 - updating the `summary.yaml`
 - creating and updating tag files (which will be `/tags/[tag-name].yaml` files for each tag)
 
@@ -85,7 +93,7 @@ Postwave is not for everything.
 It is not:
 - for people who want to generate a purely static site
 - for people who want unlimited customization
-- for giant blogs with many many thousands of posts (probably?)
+- for giant blogs with many many thousands of posts (maybe?)
 
 ## Why did you build another blogging tool?
 

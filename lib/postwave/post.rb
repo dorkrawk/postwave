@@ -61,15 +61,21 @@ module Postwave
       end
     end
 
+    def title_slug
+      @title_slug ||= @title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+    end
+    
     def slug
-      @file_name[...-3] # get rid of ".md"
+      @slug ||= @title_slug
+    end
+
+    def slug=(new_slug)
+      @slug = new_slug
     end
 
     def generated_file_name
-      title_slug = @title_slug || @title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
-
       # YYYY-MM-DD-slug-from-title.md
-      "#{@date[..9]}-#{title_slug}.md"
+      "#{@date[..9]}-#{slug}.md"
     end
 
     def update_file_name!

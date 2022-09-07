@@ -26,8 +26,9 @@ module Postwave
       end
 
       # load, rename, and sort post file names
-      posts = load_posts.sort_by { |p| p.date }.reverse
-      draft_posts, published_posts = posts.partition { |p| p&.draft }
+      posts = load_posts
+      posts = ensure_unique_slugs(posts).sort_by { |p| p.date }.reverse
+      draft_posts, published_posts = posts.partition { |p| p.respond_to?(:draft) ? p.draft : false }
       tags = {}
 
       CSV.open(File.join(Dir.pwd, POSTS_DIR, META_DIR, INDEX_FILE_NAME), "w") do |csv|
@@ -61,6 +62,22 @@ module Postwave
       Dir.glob(File.join(Dir.pwd, POSTS_DIR, "*.md")) do |post_file_path|
         posts << Postwave::Post.new_from_file_path(post_file_path)
       end
+      posts
+    end
+
+    def ensure_unique_slugs(posts)
+      slug_count = {}
+
+      posts.sort_by { |p| p.date }.each do |post|
+        title_slug = post.title_slug
+        if slug_count.key?(title_slug)
+          slug_count[title_slug] += 1
+          post.slug = "#{title_slug}-#{slug_count[title_slug]}"
+        else
+          slug_count[title_slug] = 0
+        end
+      end
+
       posts
     end
 
