@@ -10,6 +10,12 @@ It lets you write posts in Markdown and then display them on a dynamic site usin
 
 ## Getting Started
 
+### Installation
+
+```
+gem install postwave
+```
+
 ### Setup
 
 ```
