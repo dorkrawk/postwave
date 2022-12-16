@@ -7,6 +7,18 @@ module Postwave
       puts "🌊 Creating new blog..."
     end
 
+    def output_blog_name_prompt
+      puts "Enter the name of this blog (leave blank to skip): "
+    end
+
+    def output_blog_url_prompt
+      puts "Enter the url of this blog (leave blank to skip): "
+    end
+
+    def output_blog_description_prompt
+      puts "Enter a short description of this blog (leave blank to skip): "
+    end
+
     def output_blog_created
       puts "New blog set up.".green
     end

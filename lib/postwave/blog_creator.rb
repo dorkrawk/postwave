@@ -22,6 +22,8 @@ module Postwave
       build_files
       write_initial_summary_contents
 
+      configure_blog
+
       output_blog_created 
     end
 
@@ -43,7 +45,20 @@ module Postwave
         tags: []
       }
 
-      File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME), summary.to_yaml)
+      File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME), summary.transform_keys(&:to_s).to_yaml)
+    end
+
+    def configure_blog
+      config = {}
+
+      output_blog_name_prompt
+      config[:name] = gets.chomp
+      output_blog_url_prompt
+      config[:url] = gets.chomp
+      output_blog_description_prompt
+      config[:description] = gets.chomp
+
+      File.write(File.join(Dir.pwd, CONFIG_FILE_NAME), config.transform_keys(&:to_s).to_yaml)      
     end
   end
 end

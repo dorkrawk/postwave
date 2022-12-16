@@ -3,6 +3,7 @@ module Postwave
     CONFIG_FILE_NAME = "postwave.yaml"
     INDEX_FILE_NAME = "index.csv"
     SUMMARY_FILE_NAME = "summary.yaml"
+    RSS_FILE_NAME = "rss"
     POSTS_DIR = "_posts"
     META_DIR = "meta"
     TAGS_DIR = "tags"
