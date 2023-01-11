@@ -55,10 +55,13 @@ module Postwave
       config[:name] = gets.chomp
       output_blog_url_prompt
       config[:url] = gets.chomp
+      output_blog_posts_path_prompt
+      config[:posts_path] = gets.chomp
       output_blog_description_prompt
       config[:description] = gets.chomp
 
-      File.write(File.join(Dir.pwd, CONFIG_FILE_NAME), config.transform_keys(&:to_s).to_yaml)      
+      File.write(File.join(Dir.pwd, CONFIG_FILE_NAME), config.transform_keys(&:to_s).to_yaml)
+      output_config_message
     end
   end
 end

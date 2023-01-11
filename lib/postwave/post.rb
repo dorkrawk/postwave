@@ -33,9 +33,12 @@ module Postwave
             next if clean_line.empty?
           end
 
-          field_content["body"] += "#{line}\n"
+          field_content["body"] += "#{line}"
         end
       end
+
+      # turn "date" into a Time object
+      field_content["date"] = Time.parse(field_content["date"])
 
       # turn "tags" into an array
       if field_content["tags"]
@@ -75,7 +78,7 @@ module Postwave
 
     def generated_file_name
       # YYYY-MM-DD-slug-from-title.md
-      "#{@date[..9]}-#{slug}.md"
+      "#{@date.to_s[..9]}-#{slug}.md"
     end
 
     def update_file_name!

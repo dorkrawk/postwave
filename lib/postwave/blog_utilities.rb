@@ -37,5 +37,13 @@ module Postwave
       end
       missing_paths
     end
+
+    def config_values
+      @config_values ||= if yaml_load = YAML.load_file(File.join(Dir.pwd, CONFIG_FILE_NAME))
+          yaml_load.transform_keys(&:to_sym)
+        else
+          {}
+      end
+    end
   end
 end

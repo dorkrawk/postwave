@@ -15,8 +15,16 @@ module Postwave
       puts "Enter the url of this blog (leave blank to skip): "
     end
 
+    def output_blog_posts_path_prompt
+      puts "Enter the directory for the blog posts (if a post will be at http://example.com/blog/posts/post-title put blog/posts):"
+    end
+
     def output_blog_description_prompt
       puts "Enter a short description of this blog (leave blank to skip): "
+    end
+
+    def output_config_message
+      puts "All configuration values can be changed at any time by editing the postwave.yaml file."
     end
 
     def output_blog_created

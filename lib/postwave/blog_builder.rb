@@ -5,6 +5,7 @@ require 'csv'
 require 'time'
 require_relative "blog_utilities"
 require_relative "display_helper"
+require_relative "rss_helper"
 require_relative "post"
 
 module Postwave
@@ -12,6 +13,7 @@ module Postwave
     include Singleton
     include BlogUtilities
     include DisplayHelper
+    include RssHelper
 
     INDEX_HEADERS = ["slug", "date", "title"]
 
@@ -52,6 +54,8 @@ module Postwave
 
       build_tags_files(tags)
       build_summary(published_posts, tags)
+
+      build_rss(published_posts)
 
       build_time = Time.now - start
       output_build_completed(build_time)
@@ -95,8 +99,8 @@ module Postwave
     def build_summary(posts, tags)
       summary = {
         post_count: posts.count,
-        most_recent_file_name: posts.first.file_name,
-        most_recent_date: posts.first.date,
+        most_recent_file_name: posts.first&.file_name,
+        most_recent_date: posts.first&.date,
         tags: tags.keys
       }
       File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME), summary.to_yaml)
