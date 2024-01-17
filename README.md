@@ -1,5 +1,7 @@
 # Postwave 🌊
 
+[![Gem Version](https://badge.fury.io/rb/postwave.svg)](https://badge.fury.io/rb/postwave)
+
 Write your posts statically. Interact with them dynamically.
 
 ## What is Postwave?
