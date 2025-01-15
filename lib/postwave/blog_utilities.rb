@@ -8,29 +8,29 @@ module Postwave
     META_DIR = "meta"
     TAGS_DIR = "tags"
 
-    def is_set_up?
-      missing_paths = find_missing_paths
+    def is_set_up?(blog_root = Dir.pwd)
+      missing_paths = find_missing_paths(blog_root)
       missing_paths.empty?
     end
 
-    def file_paths
+    def file_paths(blog_root = Dir.pwd)
       [
-        File.join(Dir.pwd, CONFIG_FILE_NAME),
-        File.join(Dir.pwd, POSTS_DIR, META_DIR, INDEX_FILE_NAME),
-        File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME),
+        File.join(blog_root, CONFIG_FILE_NAME),
+        File.join(blog_root, POSTS_DIR, META_DIR, INDEX_FILE_NAME),
+        File.join(blog_root, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME),
       ]
     end
 
-    def directory_paths
+    def directory_paths(blog_root = Dir.pwd)
       [
-        File.join(Dir.pwd, POSTS_DIR),
-        File.join(Dir.pwd, POSTS_DIR, META_DIR),
-        File.join(Dir.pwd, POSTS_DIR, META_DIR, TAGS_DIR),
+        File.join(blog_root, POSTS_DIR),
+        File.join(blog_root, POSTS_DIR, META_DIR),
+        File.join(blog_root, POSTS_DIR, META_DIR, TAGS_DIR),
       ]
     end
 
-    def find_missing_paths
-      paths_to_check = directory_paths + file_paths
+    def find_missing_paths(blog_root = Dir.pwd)
+      paths_to_check = directory_paths(blog_root) + file_paths(blog_root)
       missing_paths = []
       paths_to_check.each do |path|
         missing_paths << path if !FileTest.exists?(path)

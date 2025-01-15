@@ -14,7 +14,7 @@ module Postwave
       Postwave::BlogBuilder.instance.build
     else
       if options[:version]
-        puts "postwave #{VERSION} [ruby]"
+        puts "postwave #{VERSION}"
       end
     end
   end
