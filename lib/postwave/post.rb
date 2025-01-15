@@ -1,7 +1,7 @@
 require_relative "blog_utilities"
 
 module Postwave
-   class Post
+  class Post
     include BlogUtilities
 
     KNOWN_FIELDS = %w(title date tags title_slug body draft)
@@ -59,8 +59,8 @@ module Postwave
       @file_name = file_name
 
       field_content.each do |field, value|
-        instance_variable_set("@#{field}", value)
-        self.class.send(:attr_accessor, field)
+        instance_variable_set("@#{field}", value) unless self.instance_variables.include?("@#{field}".to_sym)
+        self.class.send(:attr_reader, field) unless self.public_methods.include?(field.to_sym)
       end
     end
 

@@ -7,6 +7,7 @@ require "time"
 require "yaml"
 
 Postwave::PostStub = Struct.new(:date, :title, :slug)
+Postwave::Tag = Struct.new(:name, :count, :post_slugs)
 
 module Postwave
   class Client
