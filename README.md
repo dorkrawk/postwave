@@ -173,6 +173,20 @@ tag = postwave_clinet.tag("tag1")
 # <Postwave::Tag tile="tag1", count=1, post_slugs=["my-great-post"]>
 ```
 
+### Get Text For An RSS Feed
+
+```ruby
+rss = postwave_client.rss
+
+# "<?xml version="1.0" encoding="utf-8"?>..."
+```
+
+## Run Tests
+
+```
+rake test
+```
+
 ## What is Postwave Not?
 
 Postwave is not for everything.

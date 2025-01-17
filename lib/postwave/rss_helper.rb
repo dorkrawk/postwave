@@ -1,35 +1,36 @@
 require_relative "blog_utilities"
-require "rss"
+require "erb"
+require 'redcarpet'
 
 module Postwave
   module RssHelper
     include BlogUtilities
 
+    FeedPost = Struct.new(:title, :link, :body, :date, :tags)
+
     def build_rss(posts)
       File.open(File.join(Dir.pwd, POSTS_DIR, META_DIR, RSS_FILE_NAME), "w") do |rss|
-        rss << rss_content(posts)
+        rss << feed_content(posts)
       end
     end
     
-    def rss_content(posts)
-      RSS::Maker.make("2.0") do |maker|
-        maker.channel.title = config_values[:name]
-        maker.channel.description = config_values[:description]
-        maker.channel.link = config_values[:url]
-        maker.channel.generator = "Postwave"
-        maker.channel.updated = Time.now.to_s
+    def feed_content(posts)
+      link = config_values[:url]
+      updated = Time.now.iso8601.to_s
+      title = config_values[:name]
+      description = config_values[:description]
 
-        posts.each do |post|
-          link = "#{config_values[:url]}/#{config_values[:posts_path]}/#{post.slug}"
-
-          maker.items.new_item do |item|
-            item.title = post.title
-            item.link = link
-            item.description = post.body
-            item.pubDate = post.date
-          end
-        end
+      markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, fenced_code_blocks: true)
+      feed_posts = posts.map do |post|
+        post_link = "#{config_values[:url]}/#{config_values[:posts_path]}/#{post.slug}"
+        html_body = CGI.unescapeHTML(markdown.render(post.body))
+        FeedPost.new(post.title, post_link, html_body, post.date.iso8601, post.tags)
       end
+
+      path = File.join(__dir__, "templates/feed.erb")
+      template = File.read(path)
+      renderer = ERB.new(template)
+      renderer.result(binding)
     end
   end
 end

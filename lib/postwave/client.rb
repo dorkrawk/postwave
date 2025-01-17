@@ -62,6 +62,13 @@ module Postwave
       Postwave::Tag.new(tag, tag_info[:count], tag_info[:post_slugs])
     end
 
+    # returns: a string of the xml representing an RSS feed of posts - String
+    def rss
+      rss_file_path = File.join(@blog_root, POSTS_DIR, META_DIR, RSS_FILE_NAME)
+      rss = File.open(rss_file_path)
+      rss.read
+    end
+
     private
 
     def is_valid_config?(config_path)
