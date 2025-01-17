@@ -1,4 +1,5 @@
 require_relative "blog_utilities"
+require "redcarpet"
 
 module Postwave
   class Post
@@ -9,6 +10,8 @@ module Postwave
     MEATADATA_DELIMTER = "---"
 
     attr_accessor :file_name
+
+    @@markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, fenced_code_blocks: true)
 
     def self.new_from_file_path(path)
       metadata_delimter_count = 0
@@ -74,6 +77,10 @@ module Postwave
 
     def slug=(new_slug)
       @slug = new_slug
+    end
+
+    def body_html
+      @@markdown.render(@body)
     end
 
     def generated_file_name

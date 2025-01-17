@@ -121,6 +121,10 @@ post = postwave_client.post("my-great-post")
 
 puts post.title
 # "My Great Post"
+puts post.body
+# "bla bla bla..."
+puts post.body_html # uses Redcarpt to convert body Markdown to HTML
+# "<p>bla bla bla...</p>"
 ```
 
 ### Get a Collection of Posts
