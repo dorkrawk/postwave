@@ -147,4 +147,34 @@ describe Postwave::Client do
       end
     end
   end
+
+  describe "#rss" do
+    it "returns valid RSS (Atom)" do
+      rss_string = @good_client.rss
+
+      _(valid_rss?(rss_string)).must_equal true
+    end
+  end
+
+  describe "#pagination" do
+  
+    it "returns a good Pagination stuct" do
+      pagination = @good_client.pagination(current_page: 1, per_page: 10)
+
+      _(pagination).must_be_instance_of Postwave::Pagination
+      _(pagination.current_page).must_equal 1
+      assert_nil pagination.prev_page
+      assert_nil pagination.next_page
+      _(pagination.total_pages).must_equal 1
+    end
+
+    it "handles a current_page out of total_page range" do
+      pagination = @good_client.pagination(current_page: 4, per_page: 1)
+
+      _(pagination.current_page).must_equal 3
+      _(pagination.prev_page).must_equal 2
+      assert_nil pagination.next_page
+      _(pagination.total_pages).must_equal 3
+    end
+  end
 end

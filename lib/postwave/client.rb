@@ -8,6 +8,7 @@ require "yaml"
 
 Postwave::PostStub = Struct.new(:date, :title, :slug)
 Postwave::Tag = Struct.new(:name, :count, :post_slugs)
+Postwave::Pagination = Struct.new(:current_page, :prev_page, :next_page, :total_pages)
 
 module Postwave
   class Client
@@ -67,6 +68,16 @@ module Postwave
       rss_file_path = File.join(@blog_root, POSTS_DIR, META_DIR, RSS_FILE_NAME)
       rss = File.open(rss_file_path)
       rss.read
+    end
+
+    # reuturns: a Pagination Struct - <struct Pagination current_page=3, prev_page=2, next_page=4, total_pages=20>
+    def pagination(current_page: 1, per_page: 10)
+      summary = @blog_summary || get_summary
+      total_pages = (summary[:post_count].to_f / per_page).ceil
+      in_bound_current = current_page.clamp(1, total_pages)
+      prev_page = in_bound_current > 1 ? in_bound_current - 1 : nil
+      next_page = in_bound_current < total_pages ? in_bound_current + 1 : nil
+      Postwave::Pagination.new(in_bound_current, prev_page, next_page, total_pages)
     end
 
     private
