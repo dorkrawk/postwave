@@ -185,6 +185,16 @@ rss = postwave_client.rss
 # "<?xml version="1.0" encoding="utf-8"?>..."
 ```
 
+### Get Pagination Information
+
+This will give you a `Postwave::Pagination` object that you can use to build pagination in your Postwave powered site.
+
+```ruby
+pagination = postwave_client.pagination(current_page: 3, per_page: 10)
+
+# <Postwave::Pagination current_page=3, prev_page=2, next_page=4, total_pages=20>
+```
+
 ## Run Tests
 
 ```
