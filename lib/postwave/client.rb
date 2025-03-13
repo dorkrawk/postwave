@@ -30,6 +30,18 @@ module Postwave
       working_index[offset, count]
     end
 
+    def archive(by: "year")
+      working_index = @full_index || get_full_index
+      post_hash = posts.group_by { |post| post.date.year }.transform_values { |posts| posts.sort_by(&:date) }
+      if by == "month"
+        post_hash.each do |key, value|
+          post_hash[key] = value.group_by { |post| post.date.month }
+        end
+      end
+
+      post_hash
+    end
+
     # returns: a post - Postwave::Post
     def post(slug)
       post_file_path = Dir["#{File.join(@blog_root, POSTS_DIR)}/*#{slug}.md"].first

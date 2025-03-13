@@ -179,6 +179,8 @@ tag = postwave_clinet.tag("tag1")
 
 ### Get Text For An RSS Feed
 
+This will give you the text for an Atom feed of your blog.
+
 ```ruby
 rss = postwave_client.rss
 
@@ -193,6 +195,36 @@ This will give you a `Postwave::Pagination` object that you can use to build pag
 pagination = postwave_client.pagination(current_page: 3, per_page: 10)
 
 # <Postwave::Pagination current_page=3, prev_page=2, next_page=4, total_pages=20>
+```
+
+### Get An Archive of Posts
+
+This returns a Hash with year as the key and an ordered array of PostStubs
+
+```ruby
+archive = postwave_client.archive
+
+# {
+#   2025 => 
+#     [<Postwave::PostStub title="My Great Post"...>, <PostwaveStub...>, ...], 
+#   2024 => 
+#     [<PostwaveStub...>, <PostwaveStub...>]
+# }
+```
+
+You can pass in a `by: "month"` parameter to further subdivide the archive by month.
+
+```ruby
+archive = postwave_client.archive(by: "month")
+
+# {
+#   2025 =>
+#     1 => [<PostwaveStub...>, <PostwaveStub...>],
+#     2 => [<PostwaveStub...>, <PostwaveStub...>]
+#   2024 =>
+#     11 => [<PostwaveStub...>, <PostwaveStub...>],
+#     12 => [<PostwaveStub...>, <PostwaveStub...>]
+# }
 ```
 
 ## Run Tests

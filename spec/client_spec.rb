@@ -48,7 +48,7 @@ describe Postwave::Client do
       _(index).must_equal index.sort_by { |p| p.date }.reverse # index should be reverse chronological
 
       _(first_post.title).must_equal "Most Recent Post"
-      _(first_post.date).must_equal Time.parse("2022-06-06 22:53")
+      _(first_post.date).must_equal Time.parse("2023-06-07 22:53")
       _(first_post.slug).must_equal "most-recent-post"
     end
 
@@ -106,11 +106,11 @@ describe Postwave::Client do
 
   describe "#post" do
     it "returns a post given a stub" do
-      post = @good_client.post("2022-06-06-most-recent-post")
+      post = @good_client.post("2023-06-07-most-recent-post")
 
       _(post).must_be_instance_of Postwave::Post
       _(post.title).must_equal "Most Recent Post"
-      _(post.date).must_equal Time.parse("2022-06-06 22:53")
+      _(post.date).must_equal Time.parse("2023-06-07 22:53")
       _(post.tags).must_equal ["hi"]
       _(post.body).must_equal "Hi testing!\n"
     end
@@ -175,6 +175,27 @@ describe Postwave::Client do
       _(pagination.prev_page).must_equal 2
       assert_nil pagination.next_page
       _(pagination.total_pages).must_equal 3
+    end
+  end
+
+  describe "#archive" do
+
+    it "returns a Hash with years as keys and an array of PostStubs as values" do
+      archive = @good_client.archive
+
+      _(archive.has_key?(2022)).must_equal true
+      _(archive.has_key?(2023)).must_equal true
+      _(archive[2022]).must_be_instance_of Array
+      _(archive[2022].count).must_equal 2
+    end
+
+    it "returns a Hash of Hashes of arrays of PostStubs when by: 'month'" do
+      month_archive = @good_client.archive(by: "month")
+      
+      _(month_archive[2022].has_key?(6)).must_equal true
+      _(month_archive[2023].has_key?(6)).must_equal true
+      _(month_archive[2022][6]).must_be_instance_of Array
+      _(month_archive[2022][6].count).must_equal 2
     end
   end
 end
