@@ -32,7 +32,7 @@ module Postwave
 
     def archive(by: "year")
       working_index = @full_index || get_full_index
-      post_hash = posts.group_by { |post| post.date.year }.transform_values { |posts| posts.sort_by(&:date) }
+      post_hash = working_index.group_by { |post| post.date.year }.transform_values { |posts| posts.sort_by(&:date) }
       if by == "month"
         post_hash.each do |key, value|
           post_hash[key] = value.group_by { |post| post.date.month }

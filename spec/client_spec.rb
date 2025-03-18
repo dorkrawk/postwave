@@ -186,6 +186,7 @@ describe Postwave::Client do
       _(archive.has_key?(2022)).must_equal true
       _(archive.has_key?(2023)).must_equal true
       _(archive[2022]).must_be_instance_of Array
+      _(archive[2022].first).must_be_instance_of Postwave::PostStub
       _(archive[2022].count).must_equal 2
     end
 
@@ -195,6 +196,7 @@ describe Postwave::Client do
       _(month_archive[2022].has_key?(6)).must_equal true
       _(month_archive[2023].has_key?(6)).must_equal true
       _(month_archive[2022][6]).must_be_instance_of Array
+      _(month_archive[2022][6].first).must_be_instance_of Postwave::PostStub
       _(month_archive[2022][6].count).must_equal 2
     end
   end
