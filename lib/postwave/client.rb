@@ -119,7 +119,7 @@ module Postwave
 
     def get_summary
       summary_file_path = File.join(@blog_root, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME)
-      YAML.load_file(summary_file_path)
+      YAML.load_file(summary_file_path, permitted_classes: [Time, Symbol])
     end
   end
 end
