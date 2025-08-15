@@ -113,18 +113,20 @@ postwave_client = Postwave::Client.new("path/to/config/postwave.yaml", preload: 
 
 ### Get a Single Post
 
-Pass in the stub (the filename without '.md') for the post.
+Pass in the stub (the filename without the date and '.md') for the post.
 ```ruby
 post = postwave_client.post("my-great-post")
 
-# <Postwave::Post title="My Great Post", date=<Time ...>, tags=["tag1"], body="bla bla bla..">
+# <Postwave::Post title="My Great Post", date=<Time ...>, tags=["tag1"], body="bla bla bla">
 
 puts post.title
 # "My Great Post"
 puts post.body
-# "bla bla bla..."
+# "bla bla bla"
 puts post.body_html # uses Redcarpt to convert body Markdown to HTML
-# "<p>bla bla bla...</p>"
+# "<p>bla bla bla</p>"
+puts post.body_preview(8) # an HTML free preview of the post with optional `limit` and `ellipsis` params
+# "bla bla..." 
 ```
 
 ### Get a Collection of Posts

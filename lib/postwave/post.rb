@@ -1,5 +1,6 @@
 require_relative "blog_utilities"
 require "redcarpet"
+require "cgi"
 
 module Postwave
   class Post
@@ -67,7 +68,7 @@ module Postwave
         self.class.send(:attr_reader, field) unless self.public_methods.include?(field.to_sym)
       end
 
-      @slug = file_name_slug
+      @slug = file_name_slug&.empty? ? title_slug : file_name_slug
     end
 
     def title_slug
@@ -88,7 +89,34 @@ module Postwave
     end
 
     def body_html
-      @@markdown.render(@body)
+      @body_html ||= @@markdown.render(@body)
+    end
+
+    def body_preview(limit = 100, ellipsis = "...")
+      text = body_html.to_s
+
+      # Turn common block boundaries into newlines first
+      text = text.gsub(/<(br|\/p|\/div|\/h\d|\/li)[^>]*>/i, "\n")
+      # Strip remaining tags
+      text = text.gsub(/<[^>]*>/, "")
+      # Decode entities
+      text = CGI.unescapeHTML(text)
+      # Collapse spaces but keep single newlines
+      text = text.gsub(/[ \t]+/, " ").gsub(/\n+/, "\n").strip
+
+      # Unicode-safe character counting (grapheme clusters)
+      graphemes = text.scan(/\X/)
+      return text if graphemes.length <= limit
+
+      candidate = graphemes.first(limit).join
+
+      # If we cut mid-word, trim back to the previous word boundary.
+      # Word characters = letters, numbers, marks, connector punctuation (e.g., underscore)
+      # This removes a trailing partial word if present.
+      cut = candidate.sub(/[\p{L}\p{N}\p{M}\p{Pc}]+\z/u, "").rstrip
+
+      # If the very first "word" exceeds the limit, we err under limit and just show an ellipsis.
+      cut.empty? ? ellipsis : "#{cut}#{ellipsis}"
     end
 
     def generated_file_name

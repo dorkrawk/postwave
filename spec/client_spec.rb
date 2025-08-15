@@ -111,8 +111,10 @@ describe Postwave::Client do
       _(post).must_be_instance_of Postwave::Post
       _(post.title).must_equal "Most Recent Post"
       _(post.date).must_equal Time.parse("2023-06-07 22:53")
+      _(post.slug).must_equal "most-recent-post"
       _(post.tags).must_equal ["hi"]
       _(post.body).must_equal "Hi testing!\n"
+      _(post.body_preview.length).must_be :<, 100
     end
 
     it "raises a PostNotFoundError if a bad stub is passed" do
