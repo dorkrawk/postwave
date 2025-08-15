@@ -7,7 +7,8 @@ module Postwave
 
     KNOWN_FIELDS = %w(title date tags title_slug body draft)
     REQUIRED_FIELDS = %w(title date)
-    MEATADATA_DELIMTER = "---"
+    METADATA_DELIMITER = "---"
+    FILE_NAME_DATE_LEN = 11 # YYYY-MM-DD-
 
     attr_accessor :file_name
 
@@ -20,7 +21,7 @@ module Postwave
 
       File.readlines(path).each do |line|
         clean_line = line.strip
-        if clean_line == MEATADATA_DELIMTER
+        if clean_line == METADATA_DELIMITER
           metadata_delimter_count += 1
           next
         end
@@ -65,10 +66,17 @@ module Postwave
         instance_variable_set("@#{field}", value) unless self.instance_variables.include?("@#{field}".to_sym)
         self.class.send(:attr_reader, field) unless self.public_methods.include?(field.to_sym)
       end
+
+      @slug = file_name_slug
     end
 
     def title_slug
       @title_slug ||= @title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
+    end
+
+    def file_name_slug
+      # YYYY-MM-DD-slug.md
+      File.basename(@file_name, ".md")[FILE_NAME_DATE_LEN..]
     end
     
     def slug
