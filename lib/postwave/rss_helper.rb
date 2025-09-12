@@ -15,14 +15,14 @@ module Postwave
     end
     
     def feed_content(posts)
-      link = config_values[:url]
+      link = config_values[:url].chomp("/")
       updated = Time.now.iso8601.to_s
       title = config_values[:name]
       description = config_values[:description]
 
       markdown = Redcarpet::Markdown.new(Redcarpet::Render::HTML, fenced_code_blocks: true)
       feed_posts = posts.map do |post|
-        post_link = "#{config_values[:url]}/#{config_values[:posts_path]}/#{post.slug}"
+        post_link = "#{link}/#{config_values[:posts_path]}/#{post.slug}"
         html_body = CGI.unescapeHTML(markdown.render(post.body))
         post_title = CGI.escapeHTML(post.title)
         FeedPost.new(post_title, post_link, html_body, post.date.iso8601, post.tags)
