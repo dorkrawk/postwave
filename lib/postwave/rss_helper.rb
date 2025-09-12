@@ -24,7 +24,8 @@ module Postwave
       feed_posts = posts.map do |post|
         post_link = "#{config_values[:url]}/#{config_values[:posts_path]}/#{post.slug}"
         html_body = CGI.unescapeHTML(markdown.render(post.body))
-        FeedPost.new(post.title, post_link, html_body, post.date.iso8601, post.tags)
+        post_title = CGI.escapeHTML(post.title)
+        FeedPost.new(post_title, post_link, html_body, post.date.iso8601, post.tags)
       end
 
       path = File.join(__dir__, "templates/feed.erb")
