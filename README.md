@@ -4,11 +4,15 @@
 
 Write your posts statically. Interact with them dynamically.
 
+[postwave.blog](https://postwave.blog/)
+
 ## What is Postwave?
 
 Postwave is an opinionated flat-file based based blog engine.
 
 It lets you write posts in Markdown and then display them on a dynamic site using the client functionality.
+
+Read more about the philosophy behind [what Postwave is for](https://postwave.blog/posts/what-is-postwave-for).
 
 ## Installation
 
@@ -228,6 +232,10 @@ archive = postwave_client.archive(by: "month")
 #     12 => [<PostwaveStub...>, <PostwaveStub...>]
 # }
 ```
+
+## Example Site
+
+The code for [postwave.blog](https://postwave.blog/) is available at [github.com/dorkrawk/postwave-site](https://github.com/dorkrawk/postwave-site) and serves as a good example of how to use Postwave in a real world project.
 
 ## Run Tests
 
