@@ -37,6 +37,7 @@ module Postwave
       CSV.open(File.join(Dir.pwd, POSTS_DIR, META_DIR, INDEX_FILE_NAME), "w") do |csv|
         csv << INDEX_HEADERS
         published_posts.each do |post|
+          raise BlogBuilderError, "Post slug cannot be blank." if post.slug.empty?
           post.update_file_name!
 
           csv << [post.slug, post.date, post.title]

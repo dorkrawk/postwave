@@ -82,7 +82,7 @@ module Postwave
     end
 
     def frozen_slug?
-      respond_to?(:frozen_slug)
+      respond_to?(:frozen_slug) && !!frozen_slug
     end
 
     def title_slug
