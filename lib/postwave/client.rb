@@ -18,7 +18,11 @@ module Postwave
       raise MissingConfigError unless is_valid_config?(config_path)
       
       @blog_root = File.dirname(config_path)
-      raise InvalidBlogError unless is_set_up?(@blog_root)
+      missing_paths = find_missing_paths(@blog_root)
+      unless missing_paths.empty?
+        missing_paths_message = "Your blog is missing the following files/directories: #{missing_paths.join(',')}"
+        raise InvalidBlogError, missing_paths_message
+      end
 
       @all_posts = get_all_posts if preload
     end
