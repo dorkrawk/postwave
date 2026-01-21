@@ -21,6 +21,7 @@ module Postwave
       build_directories
       build_files
       write_initial_summary_contents
+      write_tag_file_contents
 
       configure_blog
 
@@ -46,6 +47,11 @@ module Postwave
       }
 
       File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME), summary.transform_keys(&:to_s).to_yaml)
+    end
+
+    def write_tag_file_contents
+      # just put something in the file
+      File.write(File.join(Dir.pwd, POSTS_DIR, META_DIR, TAGS_DIR, TAG_FILE_NAME), "[]")
     end
 
     def configure_blog

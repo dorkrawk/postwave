@@ -3,6 +3,7 @@ module Postwave
     CONFIG_FILE_NAME = "postwave.yaml"
     INDEX_FILE_NAME = "index.csv"
     SUMMARY_FILE_NAME = "summary.yaml"
+    TAG_FILE_NAME = ".tags"
     RSS_FILE_NAME = "rss"
     POSTS_DIR = "_posts"
     META_DIR = "meta"
@@ -18,6 +19,7 @@ module Postwave
         File.join(blog_root, CONFIG_FILE_NAME),
         File.join(blog_root, POSTS_DIR, META_DIR, INDEX_FILE_NAME),
         File.join(blog_root, POSTS_DIR, META_DIR, SUMMARY_FILE_NAME),
+        File.join(blog_root, POSTS_DIR, META_DIR, TAGS_DIR, TAG_FILE_NAME),
       ]
     end
 
