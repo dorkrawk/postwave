@@ -7,6 +7,7 @@ require_relative "blog_utilities"
 require_relative "display_helper"
 require_relative "rss_helper"
 require_relative "post"
+require_relative "errors"
 
 module Postwave
   class BlogBuilder
@@ -36,7 +37,7 @@ module Postwave
       CSV.open(File.join(Dir.pwd, POSTS_DIR, META_DIR, INDEX_FILE_NAME), "w") do |csv|
         csv << INDEX_HEADERS
         published_posts.each do |post|
-          post.update_file_name! unless post.frozen_filename?
+          post.update_file_name!
 
           csv << [post.slug, post.date, post.title]
 
@@ -73,13 +74,13 @@ module Postwave
       slug_count = {}
 
       posts.sort_by { |p| p.date }.each do |post|
-        title_slug = post.frozen_filename? ? post.file_name_slug : post.title_slug
-        if slug_count.key?(title_slug)
-          raise BlogBuilderError, "Duplicate frozen filename: #{title_slug}" if post.frozen_filename?
-          slug_count[title_slug] += 1
-          post.slug = "#{title_slug}-#{slug_count[title_slug]}"
+        post_slug = post.frozen_slug? ? post.frozen_slug : post.title_slug
+        if slug_count.key?(post_slug)
+          raise BlogBuilderError, "Duplicate frozen slug: #{post_slug}" if post.frozen_slug?
+          slug_count[post_slug] += 1
+          post.slug = "#{post_slug}-#{slug_count[post_slug]}"
         else
-          slug_count[title_slug] = 0
+          slug_count[post_slug] = 0
         end
       end
 

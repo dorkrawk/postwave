@@ -57,11 +57,6 @@ module Postwave
         field_content["draft"] = field_content["draft"].downcase == "true"
       end
 
-      # turn "freeze_filename" into boolean
-      if field_content["frozen_filename"]
-        field_content["frozen_filename"] = field_content["frozen_filename"].downcase == "true"        
-      end
-
       self.new(path, field_content)
     end
     
@@ -73,15 +68,21 @@ module Postwave
         self.class.send(:attr_reader, field) unless self.public_methods.include?(field.to_sym)
       end
 
-      @slug = file_name_slug&.empty? ? title_slug : file_name_slug
+      @slug = if frozen_slug?
+                frozen_slug
+              elsif file_name_slug&.empty?
+                title_slug
+              else
+                file_name_slug
+              end
     end
 
     def draft?
       respond_to?(:draft) && draft
     end
 
-    def frozen_filename?
-      respond_to?(:frozen_filename) && frozen_filename
+    def frozen_slug?
+      respond_to?(:frozen_slug)
     end
 
     def title_slug

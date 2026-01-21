@@ -81,6 +81,15 @@ draft: true
 ---
 ```
 
+You can freeze the slug of a post by adding `frozen_slug: post-slug` to the top section of the post.
+```
+title: A New Title!
+date: 2022-01-01
+tags:
+frozen_slug: keep-this-slug
+```
+The filename will remain `2022-01-01-keep-this-slug.md` after running `postwave build` (rather than updating to `2022-01-01-a-new-title.md`).  Note that the date part of the filename still comes from the `date` field.
+
 ### Build the Blog
 
 ```
