@@ -36,6 +36,7 @@ Here is what will be created:
 |- _posts/
 |  |- meta/
 |     |- tags/
+|       |- .tags
 |     |- index.csv
 |     |- summary.yaml
 postwave.yaml
@@ -43,7 +44,7 @@ postwave.yaml
 
 `_posts/`: This is where you write all your posts in Markdown
 
-`_posts/meta/tags/`: This will contain files for every tag your define in your posts
+`_posts/meta/tags/`: This will contain files for every tag your define in your posts. It contains a `.tags` file to make sure the directory gets picked up by git even if you have no tags.
 
 `_posts/meta/index.csv`: This will contain an ordered list of all the posts
 
@@ -99,14 +100,14 @@ The filename will remain `2022-01-01-keep-this-slug.md` after running `postwave 
 This will "build" the blog. This involves:
 - regenerating the `/meta/index.csv` file
 - generating slugs for each posts based on the post title and ensuring that there are no duplicate slugs
-- changing the post file names to match `yyyy-dd-mm-slug.md`
+- changing the post file names to match `yyyy-mm-dd-slug.md`
 - updating the `/meta/summary.yaml`
 - creating and updating tag files (which will be `/tags/[tag-name].yaml` files for each tag)
 - updating the `/meta/rss` file to create a feed for your posts
 
 ## Displaying Posts
 
-You can now use Postwave's build in client to display this posts in your project.
+You can use Postwave's built in Ruby client to display these posts in your project.
 
 ### Include the Client In Your Project
 
@@ -144,7 +145,7 @@ puts post.body_preview(8) # an HTML free preview of the post with optional `limi
 
 ### Get a Collection of Posts
 
-This will give you a list of posts for displaying on a page.
+This will give you a list of posts.
 
 You can also filter by tags and specify offsets and limits (useful for pagination).
 
@@ -161,7 +162,7 @@ Posts will be in reverse chronological order.
 
 ### Get an Index of Posts
 
-This will give you a quick list of post summaries containing the title, date, and stub, useful for building an archive page or quick index of posts.
+This will give you a quick list of post summaries containing the title, date, and stub, useful for building a summary page or quick index of posts.
 
 You can also specify offsets and limits (useful for pagination).
 ```ruby
