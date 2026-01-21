@@ -13,4 +13,7 @@ module Postwave
 
   class TagNotFoundError < PostwaveError
   end
+
+  class BlogBuilderError < PostwaveError
+  end
 end
